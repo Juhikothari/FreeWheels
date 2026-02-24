@@ -10,9 +10,12 @@ const ROLES = [
 
 export default function RegisterPage({ navigate }) {
   const { registerUser } = useAuth();
-  const [form, setForm] = useState({ name:'', email:'', password:'', phone:'', college:'', role:'seeker' });
-  const [error,   setError]   = useState('');
-  const [loading, setLoading] = useState(false);
+  const [form,      setForm]    = useState({ name:'', email:'', password:'', phone:'', college:'', role:'seeker' });
+  const [error,     setError]   = useState('');
+  const [loading,   setLoading] = useState(false);
+  const [showPass,  setShowPass]= useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [confirmPass, setConfirmPass] = useState('');
 
   const set = k => e => setForm(f => ({ ...f, [k]: e.target.value }));
 
@@ -21,6 +24,7 @@ export default function RegisterPage({ navigate }) {
     if (!form.email.trim())   return 'Email is required';
     if (!/\S+@\S+\.\S+/.test(form.email)) return 'Enter a valid email';
     if (form.password.length < 6) return 'Password must be at least 6 characters';
+    if (form.password !== confirmPass) return 'Passwords do not match';
     if (!form.phone.trim())   return 'Phone number is required';
     if (!form.college.trim()) return 'College name is required';
     return null;
@@ -81,22 +85,26 @@ export default function RegisterPage({ navigate }) {
           <div className="grid-2">
             <div className="field">
               <label>Full Name</label>
-              <input className="input" placeholder="Arjun Sharma" value={form.name} onChange={set('name')} />
+              <input className="input" placeholder="Arjun Sharma"
+                value={form.name} onChange={set('name')} />
             </div>
             <div className="field">
               <label>Phone</label>
-              <input className="input" type="tel" placeholder="+91 9876543210" value={form.phone} onChange={set('phone')} />
+              <input className="input" type="tel" placeholder="+91 9876543210"
+                value={form.phone} onChange={set('phone')} />
             </div>
           </div>
 
           <div className="field">
             <label>College Email</label>
-            <input className="input" type="email" placeholder="you@college.edu" value={form.email} onChange={set('email')} />
+            <input className="input" type="email" placeholder="you@college.edu"
+              value={form.email} onChange={set('email')} />
           </div>
 
           <div className="field">
             <label>College / University</label>
-            <input className="input" placeholder="IIT Bombay, BITS Pilani…" value={form.college} onChange={set('college')} />
+            <input className="input" placeholder="IIT Bombay, BITS Pilani…"
+              value={form.college} onChange={set('college')} />
           </div>
 
           {/* Role selector */}
@@ -115,18 +123,61 @@ export default function RegisterPage({ navigate }) {
             </div>
           </div>
 
+          {/* Password with show/hide */}
           <div className="field">
             <label>Password</label>
-            <input className="input" type="password" placeholder="Min. 6 characters" value={form.password} onChange={set('password')} />
+            <div className="input-wrap">
+              <span className="input-icon">🔒</span>
+              <input
+                className="input input-with-toggle"
+                type={showPass ? 'text' : 'password'}
+                placeholder="Min. 6 characters"
+                value={form.password} onChange={set('password')}
+              />
+              <button type="button" className="show-pass-btn"
+                onClick={() => setShowPass(s => !s)} tabIndex={-1}
+                title={showPass ? 'Hide' : 'Show'}>
+                {showPass ? '🙈' : '👁️'}
+              </button>
+            </div>
           </div>
 
-          <button type="submit" className={`btn btn-primary btn-lg btn-full mt-8 ${loading ? 'btn-loading' : ''}`} disabled={loading}>
+          {/* Confirm password */}
+          <div className="field">
+            <label>Confirm Password</label>
+            <div className="input-wrap">
+              <span className="input-icon">🔒</span>
+              <input
+                className="input input-with-toggle"
+                type={showConfirm ? 'text' : 'password'}
+                placeholder="Re-enter password"
+                value={confirmPass} onChange={e => setConfirmPass(e.target.value)}
+              />
+              <button type="button" className="show-pass-btn"
+                onClick={() => setShowConfirm(s => !s)} tabIndex={-1}
+                title={showConfirm ? 'Hide' : 'Show'}>
+                {showConfirm ? '🙈' : '👁️'}
+              </button>
+            </div>
+            {confirmPass && form.password !== confirmPass && (
+              <p className="field-error-msg">Passwords do not match</p>
+            )}
+            {confirmPass && form.password === confirmPass && confirmPass.length >= 6 && (
+              <p className="field-success-msg">✓ Passwords match</p>
+            )}
+          </div>
+
+          <button type="submit"
+            className={`btn btn-primary btn-lg btn-full mt-8 ${loading ? 'btn-loading' : ''}`}
+            disabled={loading}>
             {!loading && 'Create Account →'}
           </button>
 
           <p className="text-center text-muted text-sm mt-16">
             Already have an account?{' '}
-            <button type="button" className="link-btn" onClick={() => navigate('login')}>Sign in</button>
+            <button type="button" className="link-btn" onClick={() => navigate('login')}>
+              Sign in
+            </button>
           </p>
         </form>
       </div>

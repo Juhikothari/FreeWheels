@@ -31,9 +31,12 @@
 .abp-headline em { font-style: normal; color: var(--accent); }
 .abp-sub { font-size: 15px; color: var(--text2); line-height: 1.65; max-width: 360px; margin-bottom: 44px; }
 
-.abp-stats { display: flex; gap: 36px; }
+.abp-stats { display: flex; gap: 36px; margin-bottom: 36px; }
 .abp-stat-n { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--accent); }
 .abp-stat-l { font-size: 11.5px; color: var(--text2); margin-top: 3px; }
+
+.abp-features { display: flex; flex-direction: column; gap: 10px; }
+.abp-feature  { font-size: 13.5px; color: var(--text2); }
 
 .abp-steps { display: flex; flex-direction: column; gap: 18px; }
 .abp-step  { display: flex; align-items: center; gap: 14px; }
@@ -49,9 +52,51 @@
   background: var(--surface);
   display: flex; align-items: center; justify-content: center;
   padding: 60px 44px;
+  overflow-y: auto;
 }
-.auth-form { width: 100%; max-width: 400px; }
+.auth-form { width: 100%; max-width: 420px; }
 .af-header { margin-bottom: 28px; }
+
+/* ── Field label row (label + forgot link side by side) ── */
+.field-label-row {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.field-label-row label { margin-bottom: 0 !important; }
+
+/* ── Show password button ── */
+.input-with-toggle { padding-right: 46px; }
+.show-pass-btn {
+  position: absolute; right: 12px; top: 50%;
+  transform: translateY(-50%);
+  background: none; border: none;
+  font-size: 16px; cursor: pointer;
+  color: var(--text3); padding: 4px;
+  transition: color 0.15s; line-height: 1;
+  display: flex; align-items: center;
+}
+.show-pass-btn:hover { color: var(--text2); }
+
+/* ── Password match messages ── */
+.field-error-msg {
+  font-size: 12px; color: var(--red);
+  margin-top: 6px; display: flex; align-items: center; gap: 4px;
+}
+.field-success-msg {
+  font-size: 12px; color: var(--green);
+  margin-top: 6px; display: flex; align-items: center; gap: 4px;
+}
+
+/* ── Back button ── */
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--text2); cursor: pointer;
+  background: none; border: none; padding: 0;
+  font-family: var(--font-body); font-weight: 500;
+  transition: color 0.15s;
+}
+.back-btn:hover { color: var(--accent); }
 
 /* ── Role cards ── */
 .role-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
